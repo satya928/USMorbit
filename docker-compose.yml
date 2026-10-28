@@ -1,0 +1,69 @@
+# Single-VPS deployment: PostgreSQL + USM Orbit + Caddy (automatic HTTPS via Let's Encrypt).
+#   1. Point a DNS A record for $DOMAIN at the server.
+#   2. cp .env.production.example .env  (fill in DOMAIN, POSTGRES_PASSWORD, optional AI_API_KEY)
+#   3. docker compose --profile tools run --rm migrate
+#   4. docker compose up -d
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: orbit
+      POSTGRES_USER: orbit
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orbit -d orbit"]
+      interval: 10s
+      retries: 5
+
+  app:
+    build: { context: ., target: runner }
+    restart: unless-stopped
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      DATABASE_URL: postgres://orbit:${POSTGRES_PASSWORD}@db:5432/orbit
+      NEXT_PUBLIC_APP_URL: https://${DOMAIN:?set DOMAIN}
+      AI_PROVIDER: ${AI_PROVIDER:-anthropic}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-claude-opus-5-5}
+      DEMO_MODE: ${DEMO_MODE:-false}
+      APP_URL: https://${DOMAIN}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_ALLOWED_DOMAINS: ${GOOGLE_ALLOWED_DOMAINS:-}
+      FEEDBACK_URL: ${FEEDBACK_URL:-}
+    volumes:
+      - storage:/data/storage
+
+  # One-off tasks (not started by `up`):
+  #   docker compose --profile tools run --rm migrate                    # apply migrations
+  #   docker compose --profile tools run --rm migrate npm run db:seed    # demo instance only (ALLOW_DEMO_SEED=true)
+  migrate:
+    build: { context: ., target: tools }
+    profiles: ["tools"]
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      DATABASE_URL: postgres://orbit:${POSTGRES_PASSWORD}@db:5432/orbit
+      NODE_ENV: production
+      ALLOW_DEMO_SEED: ${ALLOW_DEMO_SEED:-false}
+    command: ["npm", "run", "db:migrate"]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  storage:
+  caddy_data:
+  caddy_config:

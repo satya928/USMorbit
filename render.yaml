@@ -1,0 +1,48 @@
+# One-click test deployment on Render (free tier): https://render.com/deploy
+# Creates a free PostgreSQL database and a web service, runs migrations and loads the fictional
+# Northstar demo data on first start. Free web services sleep after ~15 minutes idle (first visit
+# then takes ~1 minute) and free databases expire after 30 days — fine for a test instance.
+# Uploaded photos/documents are stored on the instance disk and are lost on redeploy/restart.
+databases:
+  - name: usm-orbit-db
+    plan: free
+    databaseName: orbit
+    user: orbit
+
+services:
+  - type: web
+    name: usm-orbit-beta
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run start:hosted
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: usm-orbit-db
+          property: connectionString
+      - key: SEED_DEMO_DATA
+        value: "true"
+      - key: DEMO_MODE
+        value: "true"
+      - key: STORAGE_DIR
+        value: ./storage
+      - key: AI_PROVIDER
+        value: anthropic
+      - key: AI_MODEL
+        value: claude-opus-5-5
+      - key: AI_API_KEY
+        sync: false
+      - key: FEEDBACK_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_ALLOWED_DOMAINS
+        sync: false
