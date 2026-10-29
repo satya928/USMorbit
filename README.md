@@ -8,7 +8,7 @@ USM Orbit connects facilities service requests to sites, assets, people, contrac
 
 It is a working, database-backed application, not a mockup. Every screen reads from PostgreSQL, every action is authorised on the server, and every dashboard figure is calculated from records.
 
-> Beta build specification: [`docs/USM_Orbit_Beta_Build_Specification.md`](docs/USM_Orbit_Beta_Build_Specification.md) · Project plan & status (PDF): [`docs/USM_Orbit_Project_Plan_and_Status.pdf`](docs/USM_Orbit_Project_Plan_and_Status.pdf)
+> Beta product specification: [`docs/USM_Orbit_Beta_Product_Specification.md`](docs/USM_Orbit_Beta_Product_Specification.md) · Project plan & status (PDF): [`docs/USM_Orbit_Project_Plan_and_Status.pdf`](docs/USM_Orbit_Project_Plan_and_Status.pdf)
 > Tester guide: [`docs/TESTING_GUIDE.md`](docs/TESTING_GUIDE.md) · Feature checklist: [`docs/FEATURES.md`](docs/FEATURES.md) · Demo script: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) · Deployment: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) · Security notes: [`docs/SECURITY.md`](docs/SECURITY.md) · Google sign-in: [`docs/GOOGLE_SIGN_IN.md`](docs/GOOGLE_SIGN_IN.md)
 
 ---

@@ -1,25 +1,26 @@
 # USM Orbit --- Service & Maintenance Operations Platform
 
-## Beast Mode Build Prompt & Beta Product Specification
+## Beta Product Specification
 
-**Version:** 1.0\
-**Prepared:** 2026-10-23\
-**Purpose:** Build a demonstrable, usable beta with real authentication,
-a persistent database, and end-to-end facilities service workflows.
+**Version:** 1.1\
+**Prepared:** 2026-10-23 (updated 2026-10-29)\
+**Based on:** USM Orbit Business Plan (19 October 2026)\
+**Purpose:** Define a demonstrable, usable beta of USM Orbit with real
+authentication, a persistent database, and end-to-end service and
+maintenance workflows.
 
 ------------------------------------------------------------------------
 
-# Part A --- Master Build Prompt (paste into Beast Mode)
+# Part A --- Product Build Brief
 
-You are a senior product engineer, full-stack architect, UX designer,
-database engineer, and application security engineer. Build a
-production-minded beta web application named **USM Orbit --- Service &
-Maintenance Operations Platform**.
+The beta is a production-minded web application named **USM Orbit ---
+Service & Maintenance Operations Platform**, delivered by a team covering
+product engineering, full-stack architecture, UX design, database
+engineering and application security.
 
-Do not build only a static mockup. Implement working end-to-end flows
-backed by a real database and authentication. Use the existing
-capabilities and workflow concepts in the USM Orbit business plan as the
-product foundation: employee and contractor profiles, projects/work
+It is not a static mockup: it implements working end-to-end flows
+backed by a real database and authentication. Its foundation is the
+capabilities and workflow concepts of the USM Orbit business plan: employee and contractor profiles, projects/work
 orders, delegation, sign-in/out where appropriate, work-in-progress
 tracking, quality audits, client sign-off, compliance documents,
 inventory-ready architecture, training/knowledge, and reporting.
@@ -95,9 +96,9 @@ variables
 Do not add unnecessary microservices for the beta. A modular monolith is
 preferred. Keep domain logic separated by module so it can scale later.
 
-If Beast Mode has a different preferred stack or built-in database/auth
-capabilities, adapt to those while preserving the requirements and
-explain the choice in README.
+If the delivery team prefers a different stack or managed database/auth
+service, it may adapt while preserving these requirements, and must
+explain the choice in the README.
 
 ## 4. Brand and UX direction
 
@@ -845,21 +846,26 @@ Never commit real values. Use a secret manager in deployment.
 
 ------------------------------------------------------------------------
 
-# Part E --- Short Prompt for the First Beast Mode Turn
+# Part E --- Delivery Status
 
-> Inspect the current repository before changing anything. We are
-> building **USM Orbit --- Service & Maintenance Operations Platform**, a real-data
-> beta with authentication, tenant isolation, persistent database
-> records and a complete work-order lifecycle. Read the full
-> `USM_Orbit_Beta_Build_Specification.md` and follow it as
-> the source of truth. First report the current stack, existing
-> implementation, missing dependencies and the proposed implementation
-> plan. Then implement Milestone 1 only: app shell, auth, tenant
-> membership/roles, database schema/migrations, RLS or equivalent
-> server-side authorization, seed data and README setup. Run the
-> relevant checks and report actual results. Do not create static-only
-> screens, hard-code dashboard metrics, expose secrets, or claim tests
-> passed unless run.
+The beta described in this specification has been delivered in the
+repository **github.com/satya928/USMorbit** (branch `main`):
+
+-   All eleven navigation sections (Part A §5) are implemented with
+    database-backed data, server-side authorization and tenant isolation.
+-   The full work-order lifecycle, including inspection, client
+    approval and rework, is covered by automated end-to-end tests.
+-   Additions beyond this specification: Sign in with Google for invited
+    users, an in-app beta feedback link, a tenant provisioning tool and a
+    one-click test-hosting blueprint.
+-   Feature-by-feature status: `docs/FEATURES.md`. Setup, tests and
+    deployment: `README.md` and `docs/DEPLOYMENT.md`. Plan and roadmap:
+    `docs/USM_Orbit_Project_Plan_and_Status.pdf`.
+
+The next build phases follow the USM Orbit business plan roadmap: site
+attendance and projects (Phase 1 completion), the compliance library and
+safety (Phase 2), inventory (Phase 3), Orbit Academy (Phase 4) and
+intelligent operations (Phase 5).
 
 ------------------------------------------------------------------------
 
